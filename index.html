@@ -1,3 +1,1042 @@
-<h1>Demo page </h1>
-<h1>Demo page </h1>
-<h1>Demo page </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC-VC: Voice Conversion Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin: 15px 0;
+            font-size: 1.4rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        .abstract {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        /* Audio comparison tables */
+        .comparison-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .comparison-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+        
+        .audio-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+        
+        .audio-table th, .audio-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .audio-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .audio-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .audio-table tr:hover {
+            background-color: #e8f4fc;
+        }
+        
+        .audio-cell {
+            min-width: 150px;
+        }
+        
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        
+        .audio-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .rating {
+            color: #f39c12;
+        }
+        
+        /* PSR Operation Section */
+        .psr-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .psr-table th, .psr-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .psr-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .psr-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .psr-table tr:hover {
+            background-color: #e8f4fc;
+        }
+        
+        /* SAA Section Styles */
+        .saa-subsection {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .saa-audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .saa-audio-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .saa-audio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .psr-table {
+                font-size: 0.9rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .audio-table {
+                font-size: 0.8rem;
+            }
+        }
+        
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #24292e;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.github-link:hover {
+  background-color: #1b1f23;
+}
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Expressive Voice Conversion with Emotion-Controllable
+via Specific Attribute Augmentation</h1>
+
+<a href="https://github.com/TengNN/ExpressiveVC" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   class="github-link">
+   <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01 0.37-2.53-.46-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.19-.82 2.19-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+   </svg>
+   code
+</a>
+        </header>
+        
+        <div class="content">
+            <div class="section">
+                <div class="abstract">
+                    <h2>Abstract</h2>
+                    <p>Expressive voice conversion (VC) aims to transfer the speaker identity and emotion from the target speech to the source speech. 
+                        In this paper, we propose an emotion-controllable VC, EC-VC, which includes a Specific Attribute Augmentation (SAA) strategy for perturbing the speaker and emotion attributes of source speech, 
+                        and an Emotion Intensity Control (EIC) module to control the emotional intensity of converted speech. Moreover, we leverage the Perturbation Adaptive Instance Normalization (PbAdaIN) to further boost the synthesis quality. 
+                        Experimental results demonstrate that our proposed EC-VC outperforms five compared models and is capable of controlling the emotional intensity of converted speech.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>Specific Attribute Augmentation (SAA) strategy</h2>
+                
+                <div class="saa-subsection">
+                    <h3>Formant Shifting</h3>
+                    <div class="saa-audio-grid">
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Source</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Formant Shifting</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Random Replace</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="saa-subsection">
+                    <h3>Pitch Monotonization</h3>
+                    <div class="saa-audio-grid">
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Source</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Pitch Monotonization</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Random Replace</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="saa-subsection">
+                    <h3>Long-term Shuffle</h3>
+                    <div class="saa-audio-grid">
+                        <div class="saa-audio-card">
+                            <div class="audio-title">After random replace</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">25 frames (we adopt)</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">10 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="saa-audio-card">
+                            <div class="audio-title">20 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="saa-audio-card">
+                            <div class="audio-title">30 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="saa-subsection">
+                    <h3>Short-term Shuffle</h3>
+                    <div class="saa-audio-grid">
+                        <div class="saa-audio-card">
+                            <div class="audio-title">After random replace</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">30 frames & 10 frames (we adopt)</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <div class="saa-audio-card">
+                            <div class="audio-title">20 frames & 5 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="saa-audio-card">
+                            <div class="audio-title">20 frames & 10 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="saa-audio-card">
+                            <div class="audio-title">30 frames & 5 frames</div>
+                            <audio controls>
+                                <source src="#" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="section">
+                <h2>Expressive Voice Conversion Results</h2>
+                
+                <div class="comparison-section">
+                    <h3 class="comparison-title">Seen-to-Seen</h3>
+                    
+                    <table class="audio-table">
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Reference</th>
+                                <th>Style-VC</th>
+                                <th>ConsistencyVC</th>
+                                <th>X-E-Speech</th>
+                                <th>DDDM-VC</th>
+                                <th>ExVC</th>
+                                <th>EC-VC(ours)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="comparison-section">
+                    <h3 class="comparison-title">Unseen-to-Unseen</h3>
+                    
+                    <table class="audio-table">
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Reference</th>
+                                <th>Style-VC</th>
+                                <th>ConsistencyVC</th>
+                                <th>X-E-Speech</th>
+                                <th>DDDM-VC</th>
+                                <th>ExVC</th>
+                                <th>EC-VC(ours)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="comparison-section">
+                    <h3 class="comparison-title">Emotional Intensity Control</h3>
+                    
+                    <table class="audio-table">
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Reference</th>
+                                <th>Weak</th>
+                                <th>Middle</th>
+                                <th>Strong</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                                <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                                <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="#" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>This page was generated by GitHub Pages.</p>
+
+        </footer>
+    </div>
+
+    <script>
+        // Simple JavaScript to enhance audio player experience
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioPlayers = document.querySelectorAll('audio');
+            
+            audioPlayers.forEach(player => {
+                player.addEventListener('play', function() {
+                    // When one audio starts playing, pause others
+                    audioPlayers.forEach(other => {
+                        if (other !== player && !other.paused) {
+                            other.pause();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
