@@ -274,18 +274,21 @@ via Specific Attribute Augmentation</h1>
                         and an Emotion Intensity Control (EIC) module to control the emotional intensity of converted speech. Moreover, we leverage the Perturbation Adaptive Instance Normalization (PbAdaIN) to further boost the synthesis quality. 
                         Experimental results demonstrate that our proposed EC-VC outperforms five compared models and is capable of controlling the emotional intensity of converted speech.</p>
                 </div>
+                <img src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/model.jpg"
+                style="max-width:100%;height:auto;"
+                loading="lazy">
             </div>
             
             <div class="section">
                 <h2>Specific Attribute Augmentation (SAA) strategy</h2>
                 
                 <div class="saa-subsection">
-                    <h3>Formant Shifting</h3>
+                    <h3>Speaker branch</h3>
                     <div class="saa-audio-grid">
                         <div class="saa-audio-card">
                             <div class="audio-title">Source</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/0015_000689.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -293,15 +296,21 @@ via Specific Attribute Augmentation</h1>
                         <div class="saa-audio-card">
                             <div class="audio-title">Formant Shifting</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/fs.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
-                        
                         <div class="saa-audio-card">
                             <div class="audio-title">Random Replace</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/random_replace_fs.wav" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <div class="saa-audio-card">
+                            <div class="audio-title">Long-term Shuffle</div>
+                            <audio controls>
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/long-term.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -309,12 +318,12 @@ via Specific Attribute Augmentation</h1>
                 </div>
                 
                 <div class="saa-subsection">
-                    <h3>Pitch Monotonization</h3>
+                    <h3>Emotion branch</h3>
                     <div class="saa-audio-grid">
                         <div class="saa-audio-card">
                             <div class="audio-title">Source</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/0015_000689.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -322,7 +331,7 @@ via Specific Attribute Augmentation</h1>
                         <div class="saa-audio-card">
                             <div class="audio-title">Pitch Monotonization</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/pm.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -330,91 +339,14 @@ via Specific Attribute Augmentation</h1>
                         <div class="saa-audio-card">
                             <div class="audio-title">Random Replace</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/random_replace_pm.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
-                    </div>
-                </div>
-                <div class="saa-subsection">
-                    <h3>Long-term Shuffle</h3>
-                    <div class="saa-audio-grid">
-                        <div class="saa-audio-card">
-                            <div class="audio-title">After random replace</div>
+                            <div class="saa-audio-card">
+                            <div class="audio-title">Short-term Shuffle</div>
                             <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        
-                        <div class="saa-audio-card">
-                            <div class="audio-title">25 frames (we adopt)</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        
-                        <div class="saa-audio-card">
-                            <div class="audio-title">10 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        <div class="saa-audio-card">
-                            <div class="audio-title">20 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        <div class="saa-audio-card">
-                            <div class="audio-title">30 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
-                </div>
-                <div class="saa-subsection">
-                    <h3>Short-term Shuffle</h3>
-                    <div class="saa-audio-grid">
-                        <div class="saa-audio-card">
-                            <div class="audio-title">After random replace</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        
-                        <div class="saa-audio-card">
-                            <div class="audio-title">30 frames & 10 frames (we adopt)</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        
-                        <div class="saa-audio-card">
-                            <div class="audio-title">20 frames & 5 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        <div class="saa-audio-card">
-                            <div class="audio-title">20 frames & 10 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        <div class="saa-audio-card">
-                            <div class="audio-title">30 frames & 5 frames</div>
-                            <audio controls>
-                                <source src="#" type="audio/wav">
+                                <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/short-term.wav" type="audio/wav">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -432,7 +364,7 @@ via Specific Attribute Augmentation</h1>
                         <thead>
                             <tr>
                                 <th>Source</th>
-                                <th>Reference</th>
+                                <th>Target</th>
                                 <th>Style-VC</th>
                                 <th>ConsistencyVC</th>
                                 <th>X-E-Speech</th>
@@ -445,99 +377,49 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/11/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/11/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/Style-VC/11/11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ConsistencyVC/11/11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/X-E-Speech/11/11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/DDDM-VC/11/11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ExVC/11/11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/11/title11.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -545,49 +427,49 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/12/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/12/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/Style-VC/12/12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ConsistencyVC/12/12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/X-E-Speech/12/12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/DDDM-VC/12/12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ExVC/12/12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/12/title12.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -595,49 +477,99 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/29/0011_000379.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/29/0018_000920.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/Style-VC/29/29.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ConsistencyVC/29/29.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/X-E-Speech/29/29.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/DDDM-VC/29/29.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ExVC/29/29.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/29/title29.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/33/0015_000122.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/33/0019_001565.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/Style-VC/33/33.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ConsistencyVC/33/33.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/X-E-Speech/33/33.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/DDDM-VC/33/33.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/ExVC/33/33.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/seen/EC-VC/33/title33.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -653,7 +585,7 @@ via Specific Attribute Augmentation</h1>
                         <thead>
                             <tr>
                                 <th>Source</th>
-                                <th>Reference</th>
+                                <th>Target</th>
                                 <th>Style-VC</th>
                                 <th>ConsistencyVC</th>
                                 <th>X-E-Speech</th>
@@ -666,99 +598,49 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1011/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1011/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/Style-VC/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ConsistencyVC/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/X-E-Speech/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/DDDM-VC/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ExVC/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1011/title1011.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -766,49 +648,49 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1075/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1075/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/Style-VC/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ConsistencyVC/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/X-E-Speech/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/DDDM-VC/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ExVC/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1075/title1075.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -816,49 +698,99 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1116/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1116/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/Style-VC/title1116/title1116.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ConsistencyVC/title1116/title1116.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/X-E-Speech/title1116/title1116.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/DDDM-VC/title1116/title1116.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ExVC/title1116/title1116.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1116/title1116.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1352/src.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1352/trg.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/Style-VC/title1352/title1352.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ConsistencyVC/title1352/title1352.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/X-E-Speech/title1352/title1352.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/DDDM-VC/title1352/title1352.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/ExVC/title1352/title1352.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/unseen/EC-VC/title1352/title1352.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -874,7 +806,7 @@ via Specific Attribute Augmentation</h1>
                         <thead>
                             <tr>
                                 <th>Source</th>
-                                <th>Reference</th>
+                                <th>Target</th>
                                 <th>Weak</th>
                                 <th>Middle</th>
                                 <th>Strong</th>
@@ -884,31 +816,31 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Angry/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Angry/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Angry/weak.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Angry/middle.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Angry/14-strong.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -916,63 +848,31 @@ via Specific Attribute Augmentation</h1>
                             <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Happy/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Happy/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Happy/weak.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Happy/middle.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                            </tr>
-                                <tr>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </td>
-                                <td class="audio-cell">
-                                    <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Happy/86-strong.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
@@ -980,31 +880,63 @@ via Specific Attribute Augmentation</h1>
                                 <tr>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/src.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/trg.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/weak.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/middle.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
                                 <td class="audio-cell">
                                     <audio controls>
-                                        <source src="#" type="audio/wav">
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/13-strong.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                            </tr>
+                                <tr>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/src.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/trg.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/weak.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/middle.wav" type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </td>
+                                <td class="audio-cell">
+                                    <audio controls>
+                                        <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/125-strong.wav" type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>
                                 </td>
