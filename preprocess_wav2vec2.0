@@ -1,0 +1,29 @@
+from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC
+import torch
+import os
+import soundfile as sf
+from glob import glob
+import glob2
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+# load model and processor
+
+processor = Wav2Vec2Processor.from_pretrained("/home2/TengNN/codes/wav2vec2")
+model = Wav2Vec2ForCTC.from_pretrained("/home2/TengNN/codes/wav2vec2").cuda().eval()
+files=glob2.glob(r"/home2/TengNN/dataset/ESD1/**/*.wav",recursive=True)
+files=sorted(files)
+print(len(files))
+for file in tqdm(files):
+    ppg_file=file.replace(r".wav",r"_eng_ppg.pt")
+    # Read and process the input
+    audio_input, sample_rate = sf.read(file)
+    inputs = processor(audio_input, sampling_rate=16_000, return_tensors="pt", padding=True)
+    #print(inputs)
+    #import matplotlib.pyplot as plt
+    with torch.no_grad():
+        logits = model(inputs.input_values.cuda()).logits
+        logits_trans=logits.transpose(2,1)
+        # print(logits_trans.size())
+        # print(file,ppg_file)
+
+        torch.save(logits_trans.cpu(),ppg_file)
