@@ -1,3 +1,42 @@
+import os
+import glob
+import sys
+import argparse
+import logging
+import json
+import subprocess
+import numpy as np
+from scipy.io.wavfile import read
+import torch
+import torchvision
+from torch.nn import functional as F
+from commons import sequence_mask
+import hifigan
+from wavlm import WavLM, WavLMConfig
+
+MATPLOTLIB_FLAG = False
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logger = logging
+    
+    
+def transform(mel, height): # 68-92
+    #r = np.random.random()
+    #rate = r * 0.3 + 0.85 # 0.85-1.15
+    #height = int(mel.size(-2) * rate)
+    tgt = torchvision.transforms.functional.resize(mel, (height, mel.size(-1)))
+    if height >= mel.size(-2):
+        return tgt[:, :mel.size(-2), :]
+    else:
+        silence = tgt[:,-1:,:].repeat(1,mel.size(-2)-height,1) 
+        silence += torch.randn_like(silence) / 10
+        return torch.cat((tgt, silence), 1)
+        
+        
+def stretch(mel, width): # 0.5-2
+    return torchvision.transforms.functional.resize(mel, (mel.size(-2), width))
+
+
 def load_checkpoint(checkpoint_path, model, optimizer=None, strict=False):
   assert os.path.isfile(checkpoint_path)
   checkpoint_dict = torch.load(checkpoint_path, map_location='cpu')
@@ -40,6 +79,18 @@ def save_checkpoint(model, optimizer, learning_rate, iteration, checkpoint_path)
               'optimizer': optimizer.state_dict(),
               'learning_rate': learning_rate}, checkpoint_path)
 
+
+def summarize(writer, global_step, scalars={}, histograms={}, images={}, audios={}, audio_sampling_rate=22050):
+  for k, v in scalars.items():
+    writer.add_scalar(k, v, global_step)
+  for k, v in histograms.items():
+    writer.add_histogram(k, v, global_step)
+  for k, v in images.items():
+    writer.add_image(k, v, global_step, dataformats='HWC')
+  for k, v in audios.items():
+    writer.add_audio(k, v, global_step, audio_sampling_rate)
+
+
 def latest_checkpoint_path(dir_path, regex="G_*.pth"):
   f_list = glob.glob(os.path.join(dir_path, regex))
   f_list.sort(key=lambda f: int("".join(filter(str.isdigit, f))))
@@ -57,7 +108,7 @@ def plot_spectrogram_to_numpy(spectrogram):
     mpl_logger = logging.getLogger('matplotlib')
     mpl_logger.setLevel(logging.WARNING)
   import matplotlib.pylab as plt
-  import numpy as np
+  # import numpy as np
   
   fig, ax = plt.subplots(figsize=(10,2))
   im = ax.imshow(spectrogram, aspect="auto", origin="lower",
@@ -83,7 +134,7 @@ def plot_alignment_to_numpy(alignment, info=None):
     mpl_logger = logging.getLogger('matplotlib')
     mpl_logger.setLevel(logging.WARNING)
   import matplotlib.pylab as plt
-  import numpy as np
+  # import numpy as np
 
   fig, ax = plt.subplots(figsize=(6, 4))
   im = ax.imshow(alignment.transpose(), aspect='auto', origin='lower',
@@ -113,3 +164,124 @@ def load_filepaths_and_text(filename, split="|"):
     filepaths_and_text = [line.strip().split(split) for line in f]
   return filepaths_and_text
 
+
+def get_hparams(init=True):
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-c', '--config', type=str, default="./configs/base.json",
+                      help='JSON file for configuration')
+  parser.add_argument('-m', '--model', type=str, required=True,
+                      help='Model name')
+  
+  args = parser.parse_args()
+  model_dir = os.path.join("./logs", args.model)
+
+  if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
+
+  config_path = args.config
+  config_save_path = os.path.join(model_dir, "config.json")
+  if init:
+    with open(config_path, "r") as f:
+      data = f.read()
+    with open(config_save_path, "w") as f:
+      f.write(data)
+  else:
+    with open(config_save_path, "r") as f:
+      data = f.read()
+  config = json.loads(data)
+  
+  hparams = HParams(**config)
+  hparams.model_dir = model_dir
+  return hparams
+
+
+def get_hparams_from_dir(model_dir):
+  config_save_path = os.path.join(model_dir, "config.json")
+  with open(config_save_path, "r") as f:
+    data = f.read()
+  config = json.loads(data)
+
+  hparams =HParams(**config)
+  hparams.model_dir = model_dir
+  return hparams
+
+
+def get_hparams_from_file(config_path):
+  with open(config_path, "r") as f:
+    data = f.read()
+  config = json.loads(data)
+
+  hparams =HParams(**config)
+  return hparams
+
+def parse_filelist(filelist_path):
+  with open(filelist_path, 'r') as f:
+    filelist = [line.strip() for line in f.readlines()]
+  return filelist
+
+
+def check_git_hash(model_dir):
+  source_dir = os.path.dirname(os.path.realpath(__file__))
+  if not os.path.exists(os.path.join(source_dir, ".git")):
+    logger.warn("{} is not a git repository, therefore hash value comparison will be ignored.".format(
+      source_dir
+    ))
+    return
+
+  cur_hash = subprocess.getoutput("git rev-parse HEAD")
+
+  path = os.path.join(model_dir, "githash")
+  if os.path.exists(path):
+    saved_hash = open(path).read()
+    if saved_hash != cur_hash:
+      logger.warn("git hash values are different. {}(saved) != {}(current)".format(
+        saved_hash[:8], cur_hash[:8]))
+  else:
+    open(path, "w").write(cur_hash)
+
+
+def get_logger(model_dir, filename="train.log"):
+  global logger
+  logger = logging.getLogger(os.path.basename(model_dir))
+  logger.setLevel(logging.DEBUG)
+  
+  formatter = logging.Formatter("%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s")
+  if not os.path.exists(model_dir):
+    os.makedirs(model_dir)
+  h = logging.FileHandler(os.path.join(model_dir, filename))
+  h.setLevel(logging.DEBUG)
+  h.setFormatter(formatter)
+  logger.addHandler(h)
+  return logger
+
+
+class HParams():
+  def __init__(self, **kwargs):
+    for k, v in kwargs.items():
+      if type(v) == dict:
+        v = HParams(**v)
+      self[k] = v
+    
+  def keys(self):
+    return self.__dict__.keys()
+
+  def items(self):
+    return self.__dict__.items()
+
+  def values(self):
+    return self.__dict__.values()
+
+  def __len__(self):
+    return len(self.__dict__)
+
+  def __getitem__(self, key):
+    return getattr(self, key)
+
+  def __setitem__(self, key, value):
+    return setattr(self, key, value)
+
+  def __contains__(self, key):
+    return key in self.__dict__
+
+  def __repr__(self):
+    return self.__dict__.__repr__()
