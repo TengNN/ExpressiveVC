@@ -352,3 +352,196 @@ class MultiPeriodDiscriminator(torch.nn.Module):
             fmap_gs.append(fmap_g)
 
         return y_d_rs, y_d_gs, fmap_rs, fmap_gs
+
+class Commom_Classifier(nn.Module):
+    '''
+    - n layer CNN + PROJECTION
+    '''
+    def __init__(self,class_num):
+        super().__init__()
+
+        convolutions = []
+        for i in range(3):
+            # parse dim
+            if i == 0:
+                in_dim = 256
+                out_dim = 512
+            else:
+                in_dim = 512
+                out_dim = 512
+
+            conv_layer = nn.Sequential(
+                ConvNorm_adv(in_dim,
+                         out_dim,
+                         kernel_size=1, stride=1,
+                         padding=int((1 - 1) / 2),
+                         dilation=1, w_init_gain='leaky_relu',
+                         param=0.2),
+                nn.BatchNorm1d(out_dim),
+                nn.LeakyReLU(0.2))
+            convolutions.append(conv_layer)
+        self.convolutions = nn.ModuleList(convolutions)
+        self.projection = LinearNorm_adv(512, class_num)
+        self.class_num = class_num
+    def forward(self, x):
+
+        # x [B, T, dim]
+        # -> [B, DIM, T]
+        hidden = x.transpose(1, 2)
+        for conv in self.convolutions:
+            hidden = conv(hidden)
+
+        # -> [B, T, dim]
+        hidden = hidden.transpose(1, 2)
+        logits = self.projection(hidden)
+        logits = logits.reshape(-1,self.class_num)
+        return logits
+
+class Encoder(nn.Module):
+  def __init__(self,
+      in_channels,
+      out_channels,
+      hidden_channels,
+      kernel_size,
+      dilation_rate,
+      n_layers,
+      gin_channels=0):
+    super().__init__()
+    self.in_channels = in_channels
+    self.out_channels = out_channels
+    self.hidden_channels = hidden_channels
+    self.kernel_size = kernel_size
+    self.dilation_rate = dilation_rate
+    self.n_layers = n_layers
+    self.gin_channels = gin_channels
+
+    self.pre = nn.Conv1d(in_channels, hidden_channels, 1)
+    self.enc = modules.WN(hidden_channels, kernel_size, dilation_rate, n_layers, gin_channels=gin_channels)
+    self.proj = nn.Conv1d(hidden_channels, out_channels * 2, 1)
+
+  def forward(self, x, x_lengths, g=None):
+    x_mask = torch.unsqueeze(commons.sequence_mask(x_lengths, x.size(2)), 1).to(x.dtype)
+    x = self.pre(x) * x_mask
+    x = self.enc(x, x_mask)
+    stats = self.proj(x) * x_mask
+    m, logs = torch.split(stats, self.out_channels, dim=1)
+    z = (m + torch.randn_like(m) * torch.exp(logs)) * x_mask
+    return z, m, logs, x_mask,x
+
+
+class MelStyleEncoder(nn.Module):
+    ''' MelStyleEncoder '''
+
+    def __init__(self, in_dim, hidden_dim, out_dim):
+        super(MelStyleEncoder, self).__init__()
+
+        self.in_dim = in_dim  # 80
+        self.hidden_dim = hidden_dim  # 256
+        self.out_dim = out_dim  # 256
+        self.kernel_size = 5
+        self.n_head = 8
+        self.dropout = 0.1
+
+        self.spectral = nn.Sequential(
+            LinearNorm(self.in_dim, self.hidden_dim),
+            Mish(),  
+            nn.Dropout(self.dropout),
+            LinearNorm(self.hidden_dim, self.hidden_dim),
+            Mish(),
+            nn.Dropout(self.dropout)
+        )
+
+        self.temporal = nn.Sequential(
+            Conv1dGLU(self.hidden_dim, self.hidden_dim, self.kernel_size, self.dropout),
+            Conv1dGLU(self.hidden_dim, self.hidden_dim, self.kernel_size, self.dropout),
+        )
+
+        self.slf_attn = MultiHeadAttention(self.n_head, self.hidden_dim,
+                                           self.hidden_dim // self.n_head, self.hidden_dim // self.n_head, self.dropout)
+
+        self.fc = LinearNorm(self.hidden_dim, self.out_dim)
+
+
+
+    def temporal_avg_pool(self, x, mask=None):
+        if mask is None:
+            out = torch.mean(x, dim=1)
+        else:
+            len_ = (~mask).sum(dim=1).unsqueeze(1)
+            x = x.masked_fill(mask.unsqueeze(-1), 0)
+            x = x.sum(dim=1)
+            out = torch.div(x, len_)
+        return out
+
+    def forward(self, x, mask=None):
+        max_len = x.shape[1]
+        slf_attn_mask = mask.unsqueeze(1).expand(-1, max_len, -1) if mask is not None else None
+
+        # spectral
+        x = self.spectral(x)
+        # temporal
+        x = x.transpose(1, 2)
+        x = self.temporal(x)
+        x = x.transpose(1, 2)
+        # self-attention
+        if mask is not None:
+            x = x.masked_fill(mask.unsqueeze(-1), 0)
+        x, _ = self.slf_attn(x, mask=slf_attn_mask)
+        # fc
+        x = self.fc(x) #[B,T,C]
+        # temoral average pooling
+        w = self.temporal_avg_pool(x, mask=mask)
+
+        return w
+
+
+class GradientReversalFunction(Function):
+    @staticmethod
+    def forward(ctx, x, lambda_):
+        ctx.lambda_ = lambda_
+        return x
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        return grad_output.neg() * ctx.lambda_, None
+
+class GradientReversalLayer(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # self.lambda_ = lambda_
+
+    def forward(self, x,lambda_):
+        return GradientReversalFunction.apply(x, lambda_)
+
+class LinearNorm_adv(torch.nn.Module):
+    def __init__(self, in_dim, out_dim, bias=True, w_init_gain='linear'):
+        super(LinearNorm_adv, self).__init__()
+        self.linear_layer = torch.nn.Linear(in_dim, out_dim, bias=bias)
+
+        torch.nn.init.xavier_uniform_(
+            self.linear_layer.weight,
+            gain=torch.nn.init.calculate_gain(w_init_gain))
+
+    def forward(self, x):
+        return self.linear_layer(x)
+
+
+class ConvNorm_adv(torch.nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=1, stride=1,
+                 padding=None, dilation=1, bias=True, w_init_gain='linear', param=None):
+        super(ConvNorm_adv, self).__init__()
+        if padding is None:
+            assert(kernel_size % 2 == 1)
+            padding = int(dilation * (kernel_size - 1) / 2)
+
+        self.conv = torch.nn.Conv1d(in_channels, out_channels,
+                                    kernel_size=kernel_size, stride=stride,
+                                    padding=padding, dilation=dilation,
+                                    bias=bias)
+
+        torch.nn.init.xavier_uniform_(
+            self.conv.weight, gain=torch.nn.init.calculate_gain(w_init_gain, param=param))
+
+    def forward(self, signal):
+        conv_signal = self.conv(signal)
+        return conv_signal
