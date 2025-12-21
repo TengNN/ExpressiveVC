@@ -6,7 +6,7 @@ from glob import glob
 import glob2
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-# load model and processor
+
 
 processor = Wav2Vec2Processor.from_pretrained("/home2/TengNN/codes/wav2vec2")
 model = Wav2Vec2ForCTC.from_pretrained("/home2/TengNN/codes/wav2vec2").cuda().eval()
