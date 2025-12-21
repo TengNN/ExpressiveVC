@@ -1,0 +1,54 @@
+    def long_term_shuffle(self, x, B, F, T):
+        block_size = 25
+        num_blocks = T // block_size#25
+        remainder = T % block_size
+
+        blocks = x[:, :, :num_blocks * block_size].reshape(B, F, num_blocks, block_size)
+
+        perms = torch.stack([torch.randperm(num_blocks) for _ in range(B)], dim=0).to(x.device)
+        perms = perms.unsqueeze(1).unsqueeze(-1).expand(-1, F, -1, block_size)
+
+        shuffled_blocks = torch.gather(blocks, dim=2, index=perms)
+
+        shuffled_x = shuffled_blocks.reshape(B, F, -1)
+        if remainder > 0:
+            shuffled_x = torch.cat([shuffled_x, x[:, :, -remainder:]], dim=2)
+        return shuffled_x
+
+
+    def short_term_shuffle(self, x, B, F, T):
+        block_size = 30
+        sub_block_size = 10
+        num_sub_blocks = block_size // sub_block_size
+
+        num_blocks = T // block_size
+        remainder = T % block_size
+
+        blocks = x[:, :, :num_blocks * block_size].reshape(B, F, num_blocks, block_size)
+
+        sub_blocks = blocks.reshape(B, F, num_blocks, num_sub_blocks, sub_block_size)
+
+        perms = torch.stack([
+            torch.stack([
+                torch.randperm(num_sub_blocks)
+                for _ in range(num_blocks)
+            ])
+            for _ in range(B)
+        ]).to(x.device)
+
+        perms = perms.unsqueeze(3).unsqueeze(1)
+        perms = perms.expand(-1, F, -1, -1, sub_block_size)
+
+
+        shuffled_sub_blocks = torch.gather(
+            sub_blocks,
+            dim=3,
+            index=perms
+        )
+
+        shuffled_blocks = shuffled_sub_blocks.reshape(B, F, num_blocks, block_size)
+
+        shuffled_x = shuffled_blocks.reshape(B, F, -1)
+        if remainder > 0:
+            shuffled_x = torch.cat([shuffled_x, x[:, :, -remainder:]], dim=2)
+        return shuffled_x
