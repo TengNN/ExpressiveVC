@@ -1,0 +1,49 @@
+import os
+import numpy as np
+import librosa
+import pyworld as pw
+import soundfile as sf
+
+input_root = '/home2/TengNN/dataset/ESD1'
+output_root = '/home2/TengNN/dataset/ESD1_pm'
+
+for root, dirs, files in os.walk(input_root):
+    for file in files:
+        if file.lower().endswith('.wav'):
+
+            input_path = os.path.join(root, file)
+
+            try:
+
+                x, fs = librosa.load(input_path, sr=None)#fs=sr
+                x = x.astype(np.float64)
+
+                #先用 harvest 初步提取，再用 stonemask 细化
+                _f0, t = pw.harvest(x, fs)
+                f0 = pw.stonemask(x, _f0, t, fs)
+
+                valid_f0 = f0[f0 > 0]
+                if len(valid_f0) == 0:
+                    print(f"Warnings：{input_path} Unable to detect a valid fundamental frequency, skip the file.")
+                    continue
+
+                mean_f0 = np.mean(valid_f0)
+
+                f0_flat = np.full_like(f0, mean_f0)
+
+                #谱包络和非周期成分
+                sp = pw.cheaptrick(x, f0, t, fs)
+                ap = pw.d4c(x, f0, t, fs)
+
+                y = pw.synthesize(f0_flat, sp, ap, fs)
+
+                rel_path = os.path.relpath(root, input_root)
+                output_dir = os.path.join(output_root, rel_path)
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)
+
+                output_path = os.path.join(output_dir, file)
+                sf.write(output_path, y, fs)
+                print(f"save: {output_path}")
+            except Exception as e:
+                print(f"Error： {input_path} : {e}")
