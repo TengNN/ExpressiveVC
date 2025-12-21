@@ -1,2 +1,2 @@
 ### Code is being organized gradually...
-Our article is based on FreeVC. Before the code is finalized, you can refer to the relevant introduction of  [FreeVC]([http://www.baidu.com/](https://github.com/OlaWod/FreeVC)).
+Our article is based on FreeVC. Before the code is finalized, you can refer to the relevant introduction of  [FreeVC](https://github.com/OlaWod/FreeVC).
