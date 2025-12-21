@@ -1,0 +1,76 @@
+import os
+import torch
+import torchaudio
+import torch.nn.functional as F
+import torch.nn as nn
+import utils
+
+class Augment(nn.Module):
+    def __init__(self, h):
+        super().__init__()
+        self.config = h
+
+        self.register_buffer(
+            'window',
+            torch.hann_window(h.data.win_length),
+            persistent=False)
+
+    def forward(self,
+                wavs: torch.Tensor,
+                mode: str = 'linear',
+                ):
+
+        fft = torch.stft(
+            wavs,
+            self.config.data.filter_length,
+            self.config.data.hop_length,
+            self.config.data.win_length,
+            self.window,
+            return_complex=True)
+
+        fs_ratio = 1.2#original is 1.2
+
+        def sampler(ratio):
+            shifts = torch.rand(wavs.shape[0], device=wavs.device) * (ratio - 1.) + 1.#[0,1) -->[1,1.2)
+            flip = torch.rand(wavs.shape[0]) < 0.5
+            shifts[flip] = shifts[flip] ** -1# 
+            return shifts
+
+        fs_shift = sampler(fs_ratio)
+
+        source = fft.transpose(1, 2)
+
+        source = self.interp(source, fs_shift, mode=mode)
+
+        fft = source.transpose(1, 2)
+
+        out = torch.istft(
+            fft,
+            self.config.data.filter_length,
+            self.config.data.hop_length,
+            self.config.data.win_length,
+            self.window)
+        out = out / out.max(dim=-1, keepdim=True).values.clamp_min(1e-7)
+
+        return out
+
+    def interp(self, inputs: torch.Tensor, shifts: torch.Tensor, mode: str):
+
+        INTERPOLATION = {
+            torch.float32: F.interpolate,
+            torch.complex64: Augment.complex_interp}
+        assert inputs.dtype in INTERPOLATION, 'unsupported interpolation'
+        interp_fn = INTERPOLATION[inputs.dtype]
+
+        _, _, Fre = inputs.shape
+
+        interp = [interp_fn(f[None], scale_factor=s.item(), mode=mode)[..., :Fre] for f, s in zip(inputs, shifts)]
+
+        return torch.cat([F.pad(f, [0, Fre - f.shape[-1]]) for f in interp], dim=0)
+
+    @staticmethod
+    def complex_interp(inputs: torch.Tensor, **kwargs):
+        mag = F.interpolate(inputs.abs(), **kwargs)
+        angle = F.interpolate(inputs.angle(), **kwargs)
+        output = torch.polar(mag, angle)
+        return output
