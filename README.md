@@ -6,3 +6,5 @@ Our article is based on FreeVC. Before the code is finalized, you can refer to t
 3.Download the ESD dataset and RAVDESS dataset  
 
 ### Preprocess
+1.
+2.
