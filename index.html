@@ -38,12 +38,21 @@
         
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
+        }
+
+        .header-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
         }
         
         .content {
@@ -200,6 +209,38 @@
             padding: 15px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
         }
+
+        .audio-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        /* Button styles */
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background-color: #24292e;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .github-link:hover {
+            background-color: #1b1f23;
+        }
+
+        .paper-link {
+            background-color: #c0392b;
+        }
+
+        .paper-link:hover {
+            background-color: #922b21;
+        }
         
         /* Footer */
         footer {
@@ -226,66 +267,51 @@
             .audio-table {
                 font-size: 0.8rem;
             }
+
+            .header-links {
+                gap: 8px;
+            }
         }
-        
-
-.github-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background-color: #24292e;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.github-link:hover {
-  background-color: #1b1f23;
-}
-        
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Expressive Voice Conversion with Controllable Emotional Intensity</h1>
+            <div class="header-links">
+                <a href="https://github.com/TengNN/ExpressiveVC" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="github-link">
+                   <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01 0.37-2.53-.46-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.19-.82 2.19-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                   </svg>
+                   code
+                </a>
 
-<a href="https://github.com/TengNN/ExpressiveVC" 
-   target="_blank" 
-   rel="noopener noreferrer"
-   class="github-link">
-   <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
-     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01 0.37-2.53-.46-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.19-.82 2.19-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-   </svg>
-   code
-</a>
+                <a href="https://github.com/TengNN/ExpressiveVC/blob/main/ExpressiveVC.pdf" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="github-link paper-link">
+                   <i class="fas fa-file-pdf"></i>
+                   paper
+                </a>
+            </div>
         </header>
         
         <div class="content">
             <div class="section">
                 <div class="abstract">
                     <h2>Abstract</h2>
-                    <p>Expressive voice conversion (VC) aims to transfer the speaker
-                    identity and emotion from the target speech to the source
-                    speech. In this paper, we propose an expressive voice conversion
-                    model with controllable emotional intensity named CEIVC,
-                    which includes a specific attribute augmentation (SAA)
-                    training strategy for perturbing the speaker and emotional attributes
-                    of source speech, and an emotional disentanglement
-                    and intensity control (EDIC) module to control the emotional
-                    intensity of converted speech. Moreover, we leverage perturbation
-                    adaptive instance normalization (PbAdaIN) to further
-                    boost the synthesis quality. Experimental results demonstrate
-                    that our proposed CEI-VC outperforms five compared
-                    models and is capable of controlling the emotional intensity
-                    of converted speech.</p>
-                <div style="text-align: center;">
-                <img src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/model.jpg"
-                style="max-width:75%;height:auto;"
-                loading="lazy">
+                    <p>
+                        Expressive voice conversion (VC) aims to transfer the speaker identity and emotion from the target speech to the source speech. In this paper, we propose an expressive voice conversion model with controllable emotional intensity named CEIVC, which includes a specific attribute augmentation (SAA) training strategy for perturbing the speaker and emotional attributes of source speech, and an emotional disentanglement and intensity control (EDIC) module to control the emotional intensity of converted speech. Moreover, we leverage perturbation adaptive instance normalization (PbAdaIN) to further boost the synthesis quality. Experimental results demonstrate that our proposed CEI-VC outperforms five compared models and is capable of controlling the emotional intensity of converted speech.
+                    </p>
+                    <div style="text-align: center;">
+                        <img src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/model.jpg"
+                             style="max-width:75%;height:auto;"
+                             loading="lazy">
+                    </div>
+                </div>
             </div>
             
             <div class="section">
@@ -352,7 +378,8 @@
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
-                            <div class="saa-audio-card">
+                        
+                        <div class="saa-audio-card">
                             <div class="audio-title">Short-term Shuffle</div>
                             <audio controls>
                                 <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/SAA/short-term.wav" type="audio/wav">
@@ -886,7 +913,7 @@
                                     </audio>
                                 </td>
                             </tr>
-                                <tr>
+                            <tr>
                                 <td class="audio-cell">
                                     <audio controls>
                                         <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Sad/src.wav" type="audio/wav">
@@ -918,7 +945,7 @@
                                     </audio>
                                 </td>
                             </tr>
-                                <tr>
+                            <tr>
                                 <td class="audio-cell">
                                     <audio controls>
                                         <source src="https://raw.githubusercontent.com/TengNN/ExpressiveVC/main/Demo/Control/Surprise/src.wav" type="audio/wav">
@@ -958,7 +985,6 @@
         
         <footer>
             <p>This page was generated by GitHub Pages.</p>
-
         </footer>
     </div>
 
